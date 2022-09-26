@@ -1,0 +1,9 @@
+# Directories
+# bin and bin-int may be commited in the future but not now
+.vs/
+bin/
+bin-int/
+
+
+#Files
+*.user
