@@ -6,6 +6,7 @@
 // 2 create the sandbox class which inherits from application
 // 3 write a function that returns the class
 
+#include <hzpch.h>
 
 #include <Hazel.h>
 

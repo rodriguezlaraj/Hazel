@@ -72,11 +72,12 @@ namespace Hazel {
 
 	class EventDispatcher
 	{
-		template<typename T>
+		
 
 		//using keyword just gives an alias.
 		//std::function contains almost any object that acts like a fucntion pointer in how you call it
 		//Standard function that returns bool and receives T&
+		template<typename T>
 		using EventFn = std::function<bool(T&)>;
 	public:
 		EventDispatcher(Event& event)

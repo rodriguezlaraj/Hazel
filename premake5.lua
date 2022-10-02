@@ -8,7 +8,16 @@ workspace "Hazel"     --name of solution
 		"Dist"     --final distribution
 	}
 
+
+
+
+
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
+
+IncludeDir = {}
+IncludeDir["GLFW"] = "Hazel/vendor/GLFW/include"
+
+include "Hazel/vendor/GLFW" --This is effectively including the premake from the GLFW directory which is basically a new project
 
 project "Hazel"   --project
 	location "Hazel"
@@ -31,7 +40,15 @@ project "Hazel"   --project
 	includedirs
 	{
 		"%{prj.name}/src",
-		"%{prj.name}/vendor/spdlog/include"
+		"%{prj.name}/vendor/spdlog/include",
+		"%{IncludeDir.GLFW}" 
+	}
+
+
+	links
+	{
+		"GLFW",          --Then this library[The project linked above] is linked into our DLL (i.e. Hazel)
+		"opengl32.lib"
 	}
 
 	filter "system:windows"
@@ -50,18 +67,40 @@ project "Hazel"   --project
 
 		}
 
-		
+	
+--If anyone is having issues with unresolved externals related to glfw3 when building, 
+--I found the issue to be in properties -> C/C++ -> Code Generation -> Runtime library. 
+-- Switching it from Multi-threaded debug (/MTd) to Multithreaded DLL(/MD) or Multithreaded 
+--Debug DLL (/MDd) did the trick.  
+--To make the premake file do what you want, they keywords are staticruntime and runtime.  
+--for /MD you want staticruntime "off" and runtime "Release", and for /MDd you want staticruntime 
+--"off" and runtime "Debug".  You may also need to get rid of any buildoptions that override this 
+--(I had buildoptions "/MT" which overrode /MD).
+--/MD   Multithreaded DLL
+--staticruntime "off"
+--runtime "Release"
+
+---MDd  Multithreaded Debug DLL
+--staticruntime "off"
+--runtime "Debug"
+	
 	filter "configurations:Debug"
 		defines "HZ_DEBUG"
 		symbols "On"
+		staticruntime "off"
+		runtime "Debug"
 
 	filter "configurations:Release"
 		defines "HZ_RELEASE"
 		optimize "On"
+		staticruntime "off"
+		runtime "Release"
 
 	filter "configurations:Dist"
 		defines "HZ_DIST"
 		optimize "On"
+		staticruntime "off"
+		runtime "Release"
 
 	--The above are not nested filters. In order to select filters simultaneously we can use the option below
 	--filters { "system:windows", "configurations:Release"}
