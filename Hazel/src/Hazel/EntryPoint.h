@@ -13,13 +13,16 @@ extern Hazel::Application* Hazel::CreateApplication();
 //how the program was run 
 int main(int argc, char** argv)
 {
-	
+	Hazel::Log::Init();
+	HZ_CORE_WARN("Initialized Log!");
+	int a = 5;
+	HZ_INFO("Hello Log! Var={0}", a);
 	auto app = Hazel::CreateApplication();
 	app->Run();
-	//Sandbox* sandbox = new Sandbox(); //Allocated on the heap. This can be very large and we want to control the lifetime of this object explicitely
+	
 	delete app;
 }
 
 #else
-#error Hazel only support Windows!
+#error Hazel only supports Windows!
 #endif//#ifdef HZ_PLATFORM_WINDOWS
