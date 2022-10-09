@@ -58,6 +58,8 @@ namespace Hazel {
 
 
 		// Set GLFW callbacks
+
+		//GLFW Will call the lamda funciton defined below whenever there is a Window Size event
 		glfwSetWindowSizeCallback(m_Window, [](GLFWwindow* window, int width, int height)
 			{
 				WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);

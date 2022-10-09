@@ -86,21 +86,24 @@ project "Hazel"   --project
 	
 	filter "configurations:Debug"
 		defines "HZ_DEBUG"
+		buildoptions "/MDd"
 		symbols "On"
-		staticruntime "off"
-		runtime "Debug"
+		--staticruntime "off"
+		--runtime "Debug"
 
 	filter "configurations:Release"
 		defines "HZ_RELEASE"
+		buildoptions "/MD"
 		optimize "On"
-		staticruntime "off"
-		runtime "Release"
+		--staticruntime "off"
+		--runtime "Release"
 
 	filter "configurations:Dist"
 		defines "HZ_DIST"
+		buildoptions "/MD"
 		optimize "On"
-		staticruntime "off"
-		runtime "Release"
+		--staticruntime "off"
+		--runtime "Release"
 
 	--The above are not nested filters. In order to select filters simultaneously we can use the option below
 	--filters { "system:windows", "configurations:Release"}
@@ -142,12 +145,15 @@ project "Sandbox"
 
 	filter "configurations:Debug"
 		defines "HZ_DEBUG"
+		buildoptions "/MDd"
 		symbols "On"
 
 	filter "configurations:Release"
 		defines "HZ_RELEASE"
+		buildoptions "/MD"
 		optimize "On"
 
 	filter "configurations:Dist"
 		defines "HZ_DIST"
+		buildoptions "/MD"
 		optimize "On"

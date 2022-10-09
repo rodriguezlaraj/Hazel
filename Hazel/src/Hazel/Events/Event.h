@@ -49,9 +49,9 @@ namespace Hazel {
 
 	class HAZEL_API Event
 	{
-		//Now event EventDispatcher has access to the private and protected members
-		friend class EventDispatcher;
+
 	public:
+		bool Handled = false;
 		//Methods MUST be defined by inherited classes. The =0 denotes a PURE VIRTUAL function.
 		//This means the implementation of the method MUST be defined in the classes derived from Event.
 		//The const indicates that the method is not supposed to change data from the class.
@@ -65,9 +65,6 @@ namespace Hazel {
 		{
 			return GetCategoryFlags() & category;
 		}
-	protected:
-		//Cannot be accessed outside of the class. Can only be access by inherited classes.
-		bool m_Handled = false;
 	};
 
 	class EventDispatcher
@@ -94,9 +91,9 @@ namespace Hazel {
 			if (m_Event.GetEventType() == T::GetStaticType())
 			{
 				//&m_Event Generic event address
-				//(T*)&m_Event) Cast to the type of the class  with which the function was called (i.e. "T")
-				//*(T*)&m_Event) Dereference of the casted event
-				m_Event.m_Handled = func(*(T*)&m_Event);
+				//(T*)&Event) Cast to the type of the class  with which the function was called (i.e. "T")
+				//*(T*)&Event) Dereference of the casted event
+				m_Event.Handled = func(*(T*)&m_Event);
 				return true;
 			}
 			return false;
