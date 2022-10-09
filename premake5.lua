@@ -16,8 +16,10 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 IncludeDir = {}
 IncludeDir["GLFW"] = "Hazel/vendor/GLFW/include"
+IncludeDir["Glad"] = "Hazel/vendor/Glad/include"
 
 include "Hazel/vendor/GLFW" --This is effectively including the premake from the GLFW directory which is basically a new project
+include "Hazel/vendor/Glad" --This is effectively including the premake from the Glad directory which is basically a new project
 
 project "Hazel"   --project
 	location "Hazel"
@@ -41,13 +43,15 @@ project "Hazel"   --project
 	{
 		"%{prj.name}/src",
 		"%{prj.name}/vendor/spdlog/include",
-		"%{IncludeDir.GLFW}" 
+		"%{IncludeDir.GLFW}", 
+		"%{IncludeDir.Glad}" 
 	}
 
 
 	links
 	{
 		"GLFW",          --Then this library[The project linked above] is linked into our DLL (i.e. Hazel)
+		"Glad",          --Then this library[The project linked above] is linked into our DLL (i.e. Hazel)
 		"opengl32.lib"
 	}
 
@@ -58,7 +62,8 @@ project "Hazel"   --project
 
 		defines{
 			"HZ_PLATFORM_WINDOWS",
-			"HZ_BUILD_DLL"
+			"HZ_BUILD_DLL",
+			"GLFW_INCLUDE_NONE"
 		}
 
 		postbuildcommands
