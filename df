@@ -1,0 +1,280 @@
+[1mdiff --git a/.gitmodules b/.gitmodules[m
+[1mindex 18063dc..57ff5da 100644[m
+[1m--- a/.gitmodules[m
+[1m+++ b/.gitmodules[m
+[36m@@ -3,4 +3,7 @@[m
+ 	url = https://github.com/gabime/spdlog[m
+ [submodule "Hazel/vendor/GLFW"][m
+ 	path = Hazel/vendor/GLFW[m
+[31m-	url = https://github.com/TheCherno/GLFW[m
+\ No newline at end of file[m
+[32m+[m	[32murl = https://github.com/TheCherno/GLFW[m
+[32m+[m[32m[submodule "Hazel/Vendor/imgui"][m
+[32m+[m	[32mpath = Hazel/Vendor/imgui[m
+[32m+[m	[32murl = https://github.com/TheCherno/imgui[m
+[1mdiff --git a/Hazel.sln b/Hazel.sln[m
+[1mindex 45dcd9f..66ec433 100644[m
+[1m--- a/Hazel.sln[m
+[1m+++ b/Hazel.sln[m
+[36m@@ -7,6 +7,8 @@[m [mProject("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Glad", "Hazel\vendor\Glad\G[m
+ EndProject[m
+ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Hazel", "Hazel\Hazel.vcxproj", "{99294D0D-053E-75BE-CEBF-181E3A9371EF}"[m
+ EndProject[m
+[32m+[m[32mProject("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ImGui", "Hazel\vendor\ImGui\ImGui.vcxproj", "{C0FF640D-2C14-8DBE-F595-301E616989EF}"[m
+[32m+[m[32mEndProject[m
+ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Sandbox", "Sandbox\Sandbox.vcxproj", "{F4C124E3-60A1-A37E-69B9-2E55D5170AE0}"[m
+ EndProject[m
+ Global[m
+[36m@@ -34,6 +36,12 @@[m [mGlobal[m
+ 		{99294D0D-053E-75BE-CEBF-181E3A9371EF}.Dist|x64.Build.0 = Dist|x64[m
+ 		{99294D0D-053E-75BE-CEBF-181E3A9371EF}.Release|x64.ActiveCfg = Release|x64[m
+ 		{99294D0D-053E-75BE-CEBF-181E3A9371EF}.Release|x64.Build.0 = Release|x64[m
+[32m+[m		[32m{C0FF640D-2C14-8DBE-F595-301E616989EF}.Debug|x64.ActiveCfg = Debug|x64[m
+[32m+[m		[32m{C0FF640D-2C14-8DBE-F595-301E616989EF}.Debug|x64.Build.0 = Debug|x64[m
+[32m+[m		[32m{C0FF640D-2C14-8DBE-F595-301E616989EF}.Dist|x64.ActiveCfg = Dist|x64[m
+[32m+[m		[32m{C0FF640D-2C14-8DBE-F595-301E616989EF}.Dist|x64.Build.0 = Dist|x64[m
+[32m+[m		[32m{C0FF640D-2C14-8DBE-F595-301E616989EF}.Release|x64.ActiveCfg = Release|x64[m
+[32m+[m		[32m{C0FF640D-2C14-8DBE-F595-301E616989EF}.Release|x64.Build.0 = Release|x64[m
+ 		{F4C124E3-60A1-A37E-69B9-2E55D5170AE0}.Debug|x64.ActiveCfg = Debug|x64[m
+ 		{F4C124E3-60A1-A37E-69B9-2E55D5170AE0}.Debug|x64.Build.0 = Debug|x64[m
+ 		{F4C124E3-60A1-A37E-69B9-2E55D5170AE0}.Dist|x64.ActiveCfg = Dist|x64[m
+[1mdiff --git a/Hazel/Hazel.vcxproj b/Hazel/Hazel.vcxproj[m
+[1mindex a2a3a41..bcdce4d 100644[m
+[1m--- a/Hazel/Hazel.vcxproj[m
+[1m+++ b/Hazel/Hazel.vcxproj[m
+[36m@@ -80,7 +80,7 @@[m
+       <PrecompiledHeaderFile>hzpch.h</PrecompiledHeaderFile>[m
+       <WarningLevel>Level3</WarningLevel>[m
+       <PreprocessorDefinitions>HZ_PLATFORM_WINDOWS;HZ_BUILD_DLL;GLFW_INCLUDE_NONE;HZ_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>[m
+[31m-      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;vendor\Glad\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>[m
+[32m+[m[32m      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;vendor\Glad\include;vendor\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>[m
+       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>[m
+       <Optimization>Disabled</Optimization>[m
+       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>[m
+[36m@@ -104,7 +104,7 @@[m
+       <PrecompiledHeaderFile>hzpch.h</PrecompiledHeaderFile>[m
+       <WarningLevel>Level3</WarningLevel>[m
+       <PreprocessorDefinitions>HZ_PLATFORM_WINDOWS;HZ_BUILD_DLL;GLFW_INCLUDE_NONE;HZ_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>[m
+[31m-      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;vendor\Glad\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>[m
+[32m+[m[32m      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;vendor\Glad\include;vendor\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>[m
+       <Optimization>Full</Optimization>[m
+       <FunctionLevelLinking>true</FunctionLevelLinking>[m
+       <IntrinsicFunctions>true</IntrinsicFunctions>[m
+[36m@@ -132,7 +132,7 @@[m
+       <PrecompiledHeaderFile>hzpch.h</PrecompiledHeaderFile>[m
+       <WarningLevel>Level3</WarningLevel>[m
+       <PreprocessorDefinitions>HZ_PLATFORM_WINDOWS;HZ_BUILD_DLL;GLFW_INCLUDE_NONE;HZ_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>[m
+[31m-      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;vendor\Glad\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>[m
+[32m+[m[32m      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;vendor\Glad\include;vendor\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>[m
+       <Optimization>Full</Optimization>[m
+       <FunctionLevelLinking>true</FunctionLevelLinking>[m
+       <IntrinsicFunctions>true</IntrinsicFunctions>[m
+[36m@@ -163,18 +163,27 @@[m
+     <ClInclude Include="src\Hazel\Events\Event.h" />[m
+     <ClInclude Include="src\Hazel\Events\KeyEvent.h" />[m
+     <ClInclude Include="src\Hazel\Events\MouseEvent.h" />[m
+[32m+[m[32m    <ClInclude Include="src\Hazel\ImGui\ImGuiLayer.h" />[m
+     <ClInclude Include="src\Hazel\Layer.h" />[m
+     <ClInclude Include="src\Hazel\LayerStack.h" />[m
+     <ClInclude Include="src\Hazel\Log.h" />[m
+     <ClInclude Include="src\Hazel\Window.h" />[m
+[32m+[m[32m    <ClInclude Include="src\Platform\OpenGL\ImGuiOpenGLRenderer.h" />[m
+[32m+[m[32m    <ClInclude Include="src\Platform\OpenGL\imgui_impl_opengl3_loader.h" />[m
+     <ClInclude Include="src\Platform\Windows\WindowsWindow.h" />[m
+     <ClInclude Include="src\hzpch.h" />[m
+   </ItemGroup>[m
+   <ItemGroup>[m
+     <ClCompile Include="src\Hazel\Application.cpp" />[m
+[32m+[m[32m    <ClCompile Include="src\Hazel\ImGui\ImGuiLayer.cpp" />[m
+     <ClCompile Include="src\Hazel\Layer.cpp" />[m
+     <ClCompile Include="src\Hazel\LayerStack.cpp" />[m
+     <ClCompile Include="src\Hazel\Log.cpp" />[m
+[32m+[m[32m    <ClCompile Include="src\Platform\OpenGL\ImGuiOpenGLRenderer.cpp">[m
+[32m+[m[32m      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>[m
+[32m+[m[32m      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">NotUsing</PrecompiledHeader>[m
+[32m+[m[32m      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>[m
+[32m+[m[32m    </ClCompile>[m
+     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp" />[m
+     <ClCompile Include="src\hzpch.cpp">[m
+       <PrecompiledHeader>Create</PrecompiledHeader>[m
+[36m@@ -187,6 +196,9 @@[m
+     <ProjectReference Include="vendor\Glad\Glad.vcxproj">[m
+       <Project>{BDD6857C-A90D-870D-52FA-6C103E10030F}</Project>[m
+     </ProjectReference>[m
+[32m+[m[32m    <ProjectReference Include="vendor\ImGui\ImGui.vcxproj">[m
+[32m+[m[32m      <Project>{C0FF640D-2C14-8DBE-F595-301E616989EF}</Project>[m
+[32m+[m[32m    </ProjectReference>[m
+   </ItemGroup>[m
+   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />[m
+   <ImportGroup Label="ExtensionTargets">[m
+[1mdiff --git a/Hazel/Hazel.vcxproj.filters b/Hazel/Hazel.vcxproj.filters[m
+[1mindex 395e242..d1d6a21 100644[m
+[1m--- a/Hazel/Hazel.vcxproj.filters[m
+[1m+++ b/Hazel/Hazel.vcxproj.filters[m
+[36m@@ -10,6 +10,9 @@[m
+     <Filter Include="Platform">[m
+       <UniqueIdentifier>{2AC788B4-1694-E3BF-3FAD-D1672BD9184E}</UniqueIdentifier>[m
+     </Filter>[m
+[32m+[m[32m    <Filter Include="Platform\OpenGL">[m
+[32m+[m[32m      <UniqueIdentifier>{1E7D2C1D-8A08-9AE1-9319-1DD6FF23F6E1}</UniqueIdentifier>[m
+[32m+[m[32m    </Filter>[m
+     <Filter Include="Platform\Windows">[m
+       <UniqueIdentifier>{64FBD71A-50F4-F66C-7926-DCF1657ED678}</UniqueIdentifier>[m
+     </Filter>[m
+[36m@@ -49,10 +52,17 @@[m
+     <ClInclude Include="src\Hazel\Window.h">[m
+       <Filter>Hazel</Filter>[m
+     </ClInclude>[m
+[32m+[m[32m    <ClInclude Include="src\Platform\OpenGL\ImGuiOpenGLRenderer.h">[m
+[32m+[m[32m      <Filter>Platform\OpenGL</Filter>[m
+[32m+[m[32m    </ClInclude>[m
+[32m+[m[32m    <ClInclude Include="src\Platform\OpenGL\imgui_impl_opengl3_loader.h">[m
+[32m+[m[32m      <Filter>Platform\OpenGL</Filter>[m
+[32m+[m[32m    </ClInclude>[m
+     <ClInclude Include="src\Platform\Windows\WindowsWindow.h">[m
+       <Filter>Platform\Windows</Filter>[m
+     </ClInclude>[m
+     <ClInclude Include="src\hzpch.h" />[m
+[32m+[m[32m    <ClInclude Include="src\Hazel\ImGui\ImGuiLayer.h" />[m
+   </ItemGroup>[m
+   <ItemGroup>[m
+     <ClCompile Include="src\Hazel\Application.cpp">[m
+[36m@@ -67,9 +77,13 @@[m
+     <ClCompile Include="src\Hazel\Log.cpp">[m
+       <Filter>Hazel</Filter>[m
+     </ClCompile>[m
+[32m+[m[32m    <ClCompile Include="src\Platform\OpenGL\ImGuiOpenGLRenderer.cpp">[m
+[32m+[m[32m      <Filter>Platform\OpenGL</Filter>[m
+[32m+[m[32m    </ClCompile>[m
+     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp">[m
+       <Filter>Platform\Windows</Filter>[m
+     </ClCompile>[m
+     <ClCompile Include="src\hzpch.cpp" />[m
+[32m+[m[32m    <ClCompile Include="src\Hazel\ImGui\ImGuiLayer.cpp" />[m
+   </ItemGroup>[m
+ </Project>[m
+\ No newline at end of file[m
+[1mdiff --git a/Hazel/src/Hazel.h b/Hazel/src/Hazel.h[m
+[1mindex 7ee6974..123b989 100644[m
+[1m--- a/Hazel/src/Hazel.h[m
+[1m+++ b/Hazel/src/Hazel.h[m
+[36m@@ -4,6 +4,7 @@[m
+ #include "Hazel/Application.h"[m
+ #include "Hazel/Layer.h"[m
+ #include "Hazel/Log.h"[m
+[32m+[m[32m#include "Hazel/ImGui/ImGuiLayer.h"[m
+ [m
+ // --- Entry Point---------------------[m
+ #include "Hazel/EntryPoint.h"[m
+[1mdiff --git a/Hazel/src/Hazel/Application.cpp b/Hazel/src/Hazel/Application.cpp[m
+[1mindex f5d6420..d73337c 100644[m
+[1m--- a/Hazel/src/Hazel/Application.cpp[m
+[1m+++ b/Hazel/src/Hazel/Application.cpp[m
+[36m@@ -10,8 +10,13 @@[m [mnamespace Hazel {[m
+ 	float red = 0;[m
+ [m
+ #define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)[m
+[32m+[m	[32mApplication* Application::s_Instance = nullptr;[m
+[32m+[m
+ 	Application::Application()[m
+ 	{[m
+[32m+[m		[32mHZ_CORE_ASSERT(!s_Instance, "Application already exists!");[m
+[32m+[m		[32ms_Instance = this;[m
+[32m+[m
+ 		m_Window = std::unique_ptr<Window>(Window::Create()); //Calls with default parameters[m
+ 		m_Window->SetEventCallback(BIND_EVENT_FN(OnEvent));[m
+ 	}[m
+[36m@@ -23,11 +28,13 @@[m [mnamespace Hazel {[m
+ 	void Application::PushLayer(Layer* layer)[m
+ 	{[m
+ 		m_LayerStack.PushLayer(layer);[m
+[32m+[m		[32mlayer->OnAttach();[m
+ 	}[m
+ [m
+ 	void Application::PushOverlay(Layer* layer)[m
+ 	{[m
+ 		m_LayerStack.PushOverlay(layer);[m
+[32m+[m		[32mlayer->OnAttach();[m
+ 	}[m
+ [m
+ 	//There is only one function because we really want to make the window layer agnostic as to what the application needs.[m
+[1mdiff --git a/Hazel/src/Hazel/Application.h b/Hazel/src/Hazel/Application.h[m
+[1mindex 4f5b872..1dc28c8 100644[m
+[1m--- a/Hazel/src/Hazel/Application.h[m
+[1m+++ b/Hazel/src/Hazel/Application.h[m
+[36m@@ -23,13 +23,20 @@[m [mnamespace Hazel {[m
+ 		void PushLayer(Layer* layer);[m
+ 		void PushOverlay(Layer* layer);[m
+ [m
+[32m+[m
+[32m+[m		[32minline Window& GetWindow() { return *m_Window; }[m
+[32m+[m
+[32m+[m		[32minline static Application& Get() { return *s_Instance; }[m
+ 	private:[m
+ 		bool OnWindowClose(WindowCloseEvent& e);[m
+ 		bool OnMouseClick(MouseButtonPressedEvent& e);[m
+ [m
+[31m-		std::unique_ptr<Window> m_Window;[m
+ 		bool m_Running = true;[m
+ 		LayerStack m_LayerStack;[m
+[32m+[m	[32mprivate:[m
+[32m+[m		[32mstatic Application* s_Instance;[m
+[32m+[m	[32mprotected:[m
+[32m+[m		[32mstd::unique_ptr<Window> m_Window;[m
+ 	};[m
+ [m
+ 	// To be defined in CLIENT[m
+[1mdiff --git a/Hazel/vendor/imgui b/Hazel/vendor/imgui[m
+[1mnew file mode 160000[m
+[1mindex 0000000..95eb0b5[m
+[1m--- /dev/null[m
+[1m+++ b/Hazel/vendor/imgui[m
+[36m@@ -0,0 +1 @@[m
+[32m+[m[32mSubproject commit 95eb0b5f6d6e3b039bbdf1c0d954a4b1dd890ccc[m
+[1mdiff --git a/Sandbox/src/SandboxApp.cpp b/Sandbox/src/SandboxApp.cpp[m
+[1mindex c762dad..692f9f7 100644[m
+[1m--- a/Sandbox/src/SandboxApp.cpp[m
+[1m+++ b/Sandbox/src/SandboxApp.cpp[m
+[36m@@ -38,6 +38,7 @@[m [mpublic:[m
+ 	Sandbox() [m
+ 	{[m
+ 		PushLayer(new ExampleLayer());[m
+[32m+[m		[32mPushOverlay(new Hazel::ImGuiLayer(Application::m_Window));[m
+ 	[m
+ 	}[m
+ 	~Sandbox() [m
+[1mdiff --git a/premake5.lua b/premake5.lua[m
+[1mindex 0cfe76d..e79dbb6 100644[m
+[1m--- a/premake5.lua[m
+[1m+++ b/premake5.lua[m
+[36m@@ -17,9 +17,12 @@[m [moutputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"[m
+ IncludeDir = {}[m
+ IncludeDir["GLFW"] = "Hazel/vendor/GLFW/include"[m
+ IncludeDir["Glad"] = "Hazel/vendor/Glad/include"[m
+[32m+[m[32mIncludeDir["ImGui"] = "Hazel/vendor/imgui"[m
+ [m
+ include "Hazel/vendor/GLFW" --This is effectively including the premake from the GLFW directory which is basically a new project[m
+ include "Hazel/vendor/Glad" --This is effectively including the premake from the Glad directory which is basically a new project[m
+[32m+[m[32minclude "Hazel/vendor/ImGui" --This is effectively including the premake from the ImGui directory which is basically a new project[m
+[32m+[m
+ [m
+ project "Hazel"   --project[m
+ 	location "Hazel"[m
+[36m@@ -44,7 +47,8 @@[m [mproject "Hazel"   --project[m
+ 		"%{prj.name}/src",[m
+ 		"%{prj.name}/vendor/spdlog/include",[m
+ 		"%{IncludeDir.GLFW}", [m
+[31m-		"%{IncludeDir.Glad}" [m
+[32m+[m		[32m"%{IncludeDir.Glad}" ,[m
+[32m+[m		[32m"%{IncludeDir.ImGui}"[m[41m [m
+ 	}[m
+ [m
+ [m
+[36m@@ -52,6 +56,7 @@[m [mproject "Hazel"   --project[m
+ 	{[m
+ 		"GLFW",          --Then this library[The project linked above] is linked into our DLL (i.e. Hazel)[m
+ 		"Glad",          --Then this library[The project linked above] is linked into our DLL (i.e. Hazel)[m
+[32m+[m		[32m"ImGui",[m
+ 		"opengl32.lib"[m
+ 	}[m
+ [m

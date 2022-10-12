@@ -17,9 +17,12 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 IncludeDir = {}
 IncludeDir["GLFW"] = "Hazel/vendor/GLFW/include"
 IncludeDir["Glad"] = "Hazel/vendor/Glad/include"
+IncludeDir["ImGui"] = "Hazel/vendor/imgui"
 
 include "Hazel/vendor/GLFW" --This is effectively including the premake from the GLFW directory which is basically a new project
 include "Hazel/vendor/Glad" --This is effectively including the premake from the Glad directory which is basically a new project
+include "Hazel/vendor/ImGui" --This is effectively including the premake from the ImGui directory which is basically a new project
+
 
 project "Hazel"   --project
 	location "Hazel"
@@ -44,7 +47,8 @@ project "Hazel"   --project
 		"%{prj.name}/src",
 		"%{prj.name}/vendor/spdlog/include",
 		"%{IncludeDir.GLFW}", 
-		"%{IncludeDir.Glad}" 
+		"%{IncludeDir.Glad}" ,
+		"%{IncludeDir.ImGui}" 
 	}
 
 
@@ -52,6 +56,7 @@ project "Hazel"   --project
 	{
 		"GLFW",          --Then this library[The project linked above] is linked into our DLL (i.e. Hazel)
 		"Glad",          --Then this library[The project linked above] is linked into our DLL (i.e. Hazel)
+		"ImGui",
 		"opengl32.lib"
 	}
 
