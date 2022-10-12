@@ -8,7 +8,7 @@ workspace "Hazel"     --name of solution
 		"Dist"     --final distribution
 	}
 
-
+startproject "Sandbox"
 
 
 
@@ -19,16 +19,21 @@ IncludeDir["GLFW"] = "Hazel/vendor/GLFW/include"
 IncludeDir["Glad"] = "Hazel/vendor/Glad/include"
 IncludeDir["ImGui"] = "Hazel/vendor/imgui"
 
-include "Hazel/vendor/GLFW" --This is effectively including the premake from the GLFW directory which is basically a new project
-include "Hazel/vendor/Glad" --This is effectively including the premake from the Glad directory which is basically a new project
-include "Hazel/vendor/ImGui" --This is effectively including the premake from the ImGui directory which is basically a new project
 
-startproject "Sandbox"
+group "Dependencies"
+	include "Hazel/vendor/GLFW"--This is effectively including the premake from the GLFW directory which is basically a new project
+	include "Hazel/vendor/Glad" --This is effectively including the premake from the Glad directory which is basically a new project
+	include "Hazel/vendor/imgui" --This is effectively including the premake from the ImGui directory which is basically a new project
+
+group ""
+
+
 
 project "Hazel"   --project
 	location "Hazel"
 	kind "SharedLib" --Dynamic Library
 	language "C++"
+	staticruntime "off"
 
 	targetdir("bin/" .. outputdir .. "/%{prj.name}")
 	objdir("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -63,7 +68,6 @@ project "Hazel"   --project
 
 	filter "system:windows"
 		cppdialect "C++17"
-		staticruntime "On"
 		systemversion "latest"
 
 		defines{
@@ -74,7 +78,8 @@ project "Hazel"   --project
 
 		postbuildcommands
 		{
-			("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Sandbox")
+			--("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Sandbox") 
+			("{COPY} %{cfg.buildtarget.relpath} \"../bin/" .. outputdir .. "/Sandbox/\"") --commit 7bb1d5077fe719ad0097ef7e6788af0d9f434680
 
 		}
 
@@ -97,24 +102,23 @@ project "Hazel"   --project
 	
 	filter "configurations:Debug"
 		defines "HZ_DEBUG"
-		buildoptions "/MDd"
+		--buildoptions "/MDd"
+		runtime "Debug"
 		symbols "On"
-		--staticruntime "off"
-		--runtime "Debug"
+
 
 	filter "configurations:Release"
 		defines "HZ_RELEASE"
-		buildoptions "/MD"
+		--buildoptions "/MD"
+		runtime "Release"
 		optimize "On"
-		--staticruntime "off"
-		--runtime "Release"
+
 
 	filter "configurations:Dist"
 		defines "HZ_DIST"
-		buildoptions "/MD"
+		--buildoptions "/MD"
+		runtime "Release"
 		optimize "On"
-		--staticruntime "off"
-		--runtime "Release"
 
 	--The above are not nested filters. In order to select filters simultaneously we can use the option below
 	--filters { "system:windows", "configurations:Release"}
@@ -124,6 +128,7 @@ project "Sandbox"
 	location "Sandbox"
 	kind "ConsoleApp"
 	language "C++"
+	staticruntime "off"
 
 	targetdir("bin/" .. outputdir .. "/%{prj.name}")
 	objdir("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -147,7 +152,6 @@ project "Sandbox"
 
 	filter "system:windows"
 		cppdialect "C++17"
-		staticruntime "On"
 		systemversion "latest"
 
 		defines{
@@ -156,15 +160,15 @@ project "Sandbox"
 
 	filter "configurations:Debug"
 		defines "HZ_DEBUG"
-		buildoptions "/MDd"
+		runtime "Debug"
 		symbols "On"
 
 	filter "configurations:Release"
 		defines "HZ_RELEASE"
-		buildoptions "/MD"
+		runtime "Release"
 		optimize "On"
 
 	filter "configurations:Dist"
 		defines "HZ_DIST"
-		buildoptions "/MD"
+		runtime "Release"
 		optimize "On"
