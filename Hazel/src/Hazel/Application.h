@@ -25,8 +25,9 @@ namespace Hazel {
 
 
 		inline Window& GetWindow() { return *m_Window; }
-
-		inline static Application& Get() { return *s_Instance; }
+		
+		//There is only going to be one application and wherever we want to access the applicatio because it has important information
+		inline static Application& Get() { return *s_Instance; } 
 	private:
 		bool OnWindowClose(WindowCloseEvent& e);
 		bool OnMouseClick(MouseButtonPressedEvent& e);
@@ -35,6 +36,7 @@ namespace Hazel {
 		bool m_Running = true;
 		LayerStack m_LayerStack;
 	private:
+		//There is only going to be one application and wherever we want to access the applicatio because it has important information
 		static Application* s_Instance;
 		
 	};

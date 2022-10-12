@@ -23,6 +23,7 @@ include "Hazel/vendor/GLFW" --This is effectively including the premake from the
 include "Hazel/vendor/Glad" --This is effectively including the premake from the Glad directory which is basically a new project
 include "Hazel/vendor/ImGui" --This is effectively including the premake from the ImGui directory which is basically a new project
 
+startproject "Sandbox"
 
 project "Hazel"   --project
 	location "Hazel"

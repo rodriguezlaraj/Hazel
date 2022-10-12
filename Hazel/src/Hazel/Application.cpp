@@ -10,12 +10,16 @@ namespace Hazel {
 	float red = 0;
 
 #define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
+	
+	//Applicatoin as a singleton
 	Application* Application::s_Instance = nullptr;
+
 
 	Application::Application()
 	{
-		HZ_CORE_ASSERT(!s_Instance, "Application already exists!");
-		s_Instance = this;
+		HZ_CORE_ASSERT(!s_Instance, "Application already exists!"); //To make sure we can only have one application
+		
+		s_Instance = this;//Application as a singleton.
 
 		m_Window = std::unique_ptr<Window>(Window::Create()); //Calls with default parameters
 		m_Window->SetEventCallback(BIND_EVENT_FN(OnEvent));
