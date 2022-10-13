@@ -91,6 +91,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 #endif
 
+#include "hzpch.h"
 #include "imgui.h"
 #include "ImGuiOpenGLRenderer.h"
 #include "glad/glad.h"
