@@ -74,7 +74,15 @@ namespace Hazel {
 			}
 
 			auto [x, y] = Input::GetMousePosition();
-			HZ_CORE_TRACE("{0}, {1}", x, y);
+			static float xx = 0;
+			static float yy = 0;
+			if( (xx != x) || (yy != y))
+			{
+				HZ_CORE_TRACE("{0}, {1}", x, y);
+				yy = y;
+				xx = x;
+			}
+			
 
 			m_Window->OnUpdate();
 		}
