@@ -22,7 +22,7 @@ namespace Hazel {
 		std::vector<Layer*>::iterator end() { return m_Layers.end(); }
 	private:
 		std::vector<Layer*> m_Layers; //Iterated forwards and in reverse. Raw pointers. Not necessary to use unique or shared.
-		unsigned int m_LayerInsertIndex = 0;
+		unsigned int m_LayerInsertIndex = 0; //Just handle the insertion index with a simple variable.
 	};
 
 }

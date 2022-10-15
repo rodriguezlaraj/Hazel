@@ -52,7 +52,7 @@ namespace Hazel {
 	{
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
-		//dispatcher.Dispatch<MouseButtonPressedEvent>(BIND_EVENT_FN(OnMouseClick));
+		dispatcher.Dispatch<MouseButtonPressedEvent>(BIND_EVENT_FN(OnMouseClick));
 
 	
 
@@ -71,15 +71,23 @@ namespace Hazel {
 			glClearColor(red, 0, 1, 1);
 			glClear(GL_COLOR_BUFFER_BIT);
 
+			//I assume that if the virtual method is not implemented by the specific layer below, then the function is just not called.
+
+			//Go through all the layers OnUpdate
 			for (Layer* layer : m_LayerStack)  //Can use directly for loop because begin and end are implemented in the LayerStack class
 			{
 				layer->OnUpdate();
 			}
 
-			m_ImGuiLayer->Begin();
+
+			//Takes care of ImGui Rendering
+			m_ImGuiLayer->Begin(); //It only requires 1 begin
+
+			//Go through all the layers for OnImGuiRender
 			for (Layer* layer : m_LayerStack)
-				layer->OnImGuiRender();
-			m_ImGuiLayer->End();
+				layer->OnImGuiRender(); //Each layer can have its own Rendering.
+
+			m_ImGuiLayer->End();  //It only requires 1 end.
 
 
 			//auto [x, y] = Input::GetMousePosition();
@@ -112,7 +120,7 @@ namespace Hazel {
 		}
 		else 
 		{
-			red += (float)0.1;
+			red += 0.1;
 		}
 
 		return true;

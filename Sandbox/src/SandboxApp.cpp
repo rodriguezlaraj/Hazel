@@ -31,9 +31,16 @@ public:
 
 	virtual void OnImGuiRender() override
 	{
-		ImGui::Begin("Test");
-		ImGui::Text("Hello World");
-		ImGui::End();
+		//Calling from the Sandbox was a problem because of Hazel's dynamic linking.
+		//Hazel's DLL only imports the functions that are actually used from ImGui. 
+		//Because these functions are not used, they are not part of the DLL.
+		//We could create a .def file to make sure all functions in ImGui are exported. 
+		//This is laborious and hard to mantain. It was for this reason that Hazel became static library.
+		//ImGui::Begin("Test");
+		ImGui::Text("Hello World From the Actual Game!");
+		static bool showWindow2 = true;
+		ImGui::ShowAboutWindow(&showWindow2);
+		//ImGui::End();
 	}
 
 	void OnEvent(Hazel::Event& event) override

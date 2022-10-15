@@ -25,6 +25,8 @@ namespace Hazel {
 	{
 
 	}
+
+	//This just uses standard functions taken from ImGui example code
 	void ImGuiLayer::OnAttach()
 	{
 		// Setup Dear ImGui context
@@ -51,9 +53,12 @@ namespace Hazel {
 		}
 
 		Application& app = Application::Get();
+
+		//Get the window
 		GLFWwindow* window = static_cast<GLFWwindow*>(app.GetWindow().GetNativeWindow());
 
 		// Setup Platform/Renderer bindings
+		//Pass the windoww and install the EVENTS. This is how events are handled.
 		ImGui_ImplGlfw_InitForOpenGL(window, true);
 
 
@@ -61,6 +66,9 @@ namespace Hazel {
 		ImGui_ImplOpenGL3_Init("#version 410");
 
 	}
+
+
+	//This just uses standard functions taken from ImGui example code
 	void ImGuiLayer::OnDetach()
 	{
 		ImGui_ImplOpenGL3_Shutdown();
@@ -68,12 +76,16 @@ namespace Hazel {
 		ImGui::DestroyContext();
 	}
 
+
+	//This begins a new frame. There is only one call ot this regardless of how many layers exist
 	void ImGuiLayer::Begin()
 	{
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
 	}
+
+	//This ends a frame. There is only one call ot this regardless of how many layers exist
 	void ImGuiLayer::End()
 	{
 		ImGuiIO& io = ImGui::GetIO();
@@ -82,6 +94,9 @@ namespace Hazel {
 		// Rendering
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+		//This is for the docking.
+		//This is specific for open gl. In the future, it willb e required a similar ImGuiLayer for each graphics API (e.g Vulkan, Metal)
 		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
 		{
 			GLFWwindow* backup_current_context = glfwGetCurrentContext();
