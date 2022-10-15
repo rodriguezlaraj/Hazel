@@ -32,9 +32,10 @@ group ""
 
 project "Hazel"   --project
 	location "Hazel"
-	kind "SharedLib" --Dynamic Library
+	kind "StaticLib" --Static Library
 	language "C++"
-	staticruntime "off"
+	cppdialect "C++17"
+	staticruntime "on"
 
 	targetdir("bin/" .. outputdir .. "/%{prj.name}")
 	objdir("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -51,6 +52,10 @@ project "Hazel"   --project
 		"%{prj.name}/vendor/glm/glm/**.inl"
 	}
 
+	defines
+	{
+		"_CRT_SECURE_NO_WARNINGS"
+	}
 	includedirs
 	{
 		"%{prj.name}/src",
@@ -71,7 +76,6 @@ project "Hazel"   --project
 	}
 
 	filter "system:windows"
-		cppdialect "C++17"
 		systemversion "latest"
 
 		defines{
@@ -80,14 +84,7 @@ project "Hazel"   --project
 			"GLFW_INCLUDE_NONE"
 		}
 
-		postbuildcommands
-		{
-			--("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Sandbox") 
-			("{COPY} %{cfg.buildtarget.relpath} \"../bin/" .. outputdir .. "/Sandbox/\"") --commit 7bb1d5077fe719ad0097ef7e6788af0d9f434680
 
-		}
-
-	
 --If anyone is having issues with unresolved externals related to glfw3 when building, 
 --I found the issue to be in properties -> C/C++ -> Code Generation -> Runtime library. 
 -- Switching it from Multi-threaded debug (/MTd) to Multithreaded DLL(/MD) or Multithreaded 
@@ -106,23 +103,20 @@ project "Hazel"   --project
 	
 	filter "configurations:Debug"
 		defines "HZ_DEBUG"
-		--buildoptions "/MDd"
 		runtime "Debug"
-		symbols "On"
+		symbols "on"
 
 
 	filter "configurations:Release"
 		defines "HZ_RELEASE"
-		--buildoptions "/MD"
 		runtime "Release"
-		optimize "On"
+		optimize "on"
 
 
 	filter "configurations:Dist"
 		defines "HZ_DIST"
-		--buildoptions "/MD"
 		runtime "Release"
-		optimize "On"
+		optimize "on"
 
 	--The above are not nested filters. In order to select filters simultaneously we can use the option below
 	--filters { "system:windows", "configurations:Release"}
@@ -132,7 +126,8 @@ project "Sandbox"
 	location "Sandbox"
 	kind "ConsoleApp"
 	language "C++"
-	staticruntime "off"
+	cppdialect "C++17"
+	staticruntime "on"
 
 	targetdir("bin/" .. outputdir .. "/%{prj.name}")
 	objdir("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -147,6 +142,7 @@ project "Sandbox"
 	{
 		"Hazel/vendor/spdlog/include",
 		"Hazel/src",
+		"Hazel/vendor",
 		"%{IncludeDir.glm}"
 	}
 	
@@ -156,7 +152,6 @@ project "Sandbox"
 	}
 
 	filter "system:windows"
-		cppdialect "C++17"
 		systemversion "latest"
 
 		defines{
@@ -166,14 +161,14 @@ project "Sandbox"
 	filter "configurations:Debug"
 		defines "HZ_DEBUG"
 		runtime "Debug"
-		symbols "On"
+		symbols "on"
 
 	filter "configurations:Release"
 		defines "HZ_RELEASE"
 		runtime "Release"
-		optimize "On"
+		optimize "on"
 
 	filter "configurations:Dist"
 		defines "HZ_DIST"
 		runtime "Release"
-		optimize "On"
+		optimize "on"

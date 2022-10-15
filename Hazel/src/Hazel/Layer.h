@@ -15,6 +15,7 @@ namespace Hazel {
 		virtual void OnDetach() {}
 
 		virtual void OnUpdate() {}	//This is what we do every frame
+		virtual void OnImGuiRender() {}
 		virtual void OnEvent(Event& event) {}
 
 		inline const std::string& GetName() const { return m_DebugName; }

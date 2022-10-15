@@ -3,6 +3,7 @@
 
 
 #ifdef HZ_PLATFORM_WINDOWS
+#if HZ_DYNAMIC_LINK
 	//If we are on windows, we will be creating a DLL from Hazel project 
 	//This DLL will be then used by our application (Sandbox).
 	//Core gets included in both project through the Hazel.h file.
@@ -13,6 +14,9 @@
 	#else
 		#define HAZEL_API __declspec(dllimport)
 	#endif //#ifdef  HZ_BUILD_DLL
+#else //#if HZ_DYNAMIC_LINK
+	#define HAZEL_API
+#endif //#if HZ_DYNAMIC_LINK
 #else
 	#error Hazel only support Windows!
 #endif//#ifdef HZ_PLATFORM_WINDOWS

@@ -25,6 +25,9 @@ namespace Hazel {
 
 		m_Window = std::unique_ptr<Window>(Window::Create()); //Calls with default parameters
 		m_Window->SetEventCallback(BIND_EVENT_FN(OnEvent));
+
+		m_ImGuiLayer = new ImGuiLayer();
+		PushOverlay(m_ImGuiLayer);
 	}
 
 	Application::~Application()
@@ -49,9 +52,9 @@ namespace Hazel {
 	{
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
-		dispatcher.Dispatch<MouseButtonPressedEvent>(BIND_EVENT_FN(OnMouseClick));
+		//dispatcher.Dispatch<MouseButtonPressedEvent>(BIND_EVENT_FN(OnMouseClick));
 
-		//HZ_CORE_TRACE("{0}", e);
+	
 
 		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin(); )
 		{
@@ -73,15 +76,21 @@ namespace Hazel {
 				layer->OnUpdate();
 			}
 
-			auto [x, y] = Input::GetMousePosition();
-			static float xx = 0;
-			static float yy = 0;
-			if( (xx != x) || (yy != y))
-			{
-				HZ_CORE_TRACE("{0}, {1}", x, y);
-				yy = y;
-				xx = x;
-			}
+			m_ImGuiLayer->Begin();
+			for (Layer* layer : m_LayerStack)
+				layer->OnImGuiRender();
+			m_ImGuiLayer->End();
+
+
+			//auto [x, y] = Input::GetMousePosition();
+			//static float xx = 0;
+			//static float yy = 0;
+			//if( (xx != x) || (yy != y))
+			//{
+			//	HZ_CORE_TRACE("{0}, {1}", x, y);
+			//	yy = y;
+			//	xx = x;
+			//}
 			
 
 			m_Window->OnUpdate();
@@ -103,7 +112,7 @@ namespace Hazel {
 		}
 		else 
 		{
-			red += 0.1;
+			red += (float)0.1;
 		}
 
 		return true;
