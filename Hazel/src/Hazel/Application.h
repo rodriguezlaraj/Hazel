@@ -13,6 +13,7 @@
 
 #include "Hazel/Renderer/Shader.h"
 #include "Hazel/Renderer/Buffer.h"
+#include "Hazel/Renderer/VertexArray.h"
 
 namespace Hazel {
 	class HAZEL_API Application
@@ -41,10 +42,11 @@ namespace Hazel {
 		bool m_Running = true;
 		LayerStack m_LayerStack;
 
-		unsigned int m_VertexArray;
-		std::unique_ptr<Shader> m_Shader;
-		std::unique_ptr<VertexBuffer> m_VertexBuffer;
-		std::unique_ptr<IndexBuffer> m_IndexBuffer;
+        std::shared_ptr<Shader> m_Shader;
+        std::shared_ptr<VertexArray> m_VertexArray;
+
+        std::shared_ptr<Shader> m_BlueShader;
+        std::shared_ptr<VertexArray> m_SquareVA;
 	private:
 		//There is only going to be one application and wherever we want to access the applicatio because it has important information
 		static Application* s_Instance;
