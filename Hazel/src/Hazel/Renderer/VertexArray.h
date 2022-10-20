@@ -5,6 +5,9 @@
 
 namespace Hazel {
 
+    //Vertex Array is an encapsulation of a Vertex buffer + Vertex layout. The Vertex layout is a combination of all the attribute pointers for one vertex.
+    // Vertex Buffer is the data which can have multiple elements (e.g. coordinates, color) which means multiple attribute pointers
+    // In this function we set *ALL* the different attributes that the buffer has for each vertex. 
     class VertexArray
     {
     public:

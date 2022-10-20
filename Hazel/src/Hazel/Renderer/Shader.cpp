@@ -14,6 +14,11 @@ namespace Hazel {
 		// Send the vertex shader source code to GL
 		// Note that std::string's .c_str is NULL character terminated.
 		const GLchar* source = vertexSrc.c_str();
+
+        //Id of the source
+        //Count of shaders to create
+        //Address of the string
+        //if length is NULL, the string is assumed to be terminated with Null
 		glShaderSource(vertexShader, 1, &source, 0);
 
 		// Compile the vertex shader

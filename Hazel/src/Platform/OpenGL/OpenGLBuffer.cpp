@@ -38,9 +38,9 @@ namespace Hazel {
 	OpenGLIndexBuffer::OpenGLIndexBuffer(uint32_t* indices, uint32_t count)
 		: m_Count(count)
 	{
-		glCreateBuffers(1, &m_RendererID);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_RendererID);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(uint32_t), indices, GL_STATIC_DRAW);
+		glCreateBuffers(1, &m_RendererID);//Creates a buffer and gives an ID back (buffer)
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_RendererID);//Selects the buffer
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(uint32_t), indices, GL_STATIC_DRAW); // Receives the size in bytes refer to docs.gl for information. Version of GL currently in used is GL4
 	}
 
 	OpenGLIndexBuffer::~OpenGLIndexBuffer()
@@ -50,12 +50,12 @@ namespace Hazel {
 
 	void OpenGLIndexBuffer::Bind() const
 	{
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_RendererID);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_RendererID); //Selects the buffer
 	}
 
 	void OpenGLIndexBuffer::Unbind() const
 	{
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);//Unselects the buffer
 	}
 
 }

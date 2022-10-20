@@ -107,6 +107,7 @@ namespace Hazel {
 
 		virtual void Bind() const = 0;
 		virtual void Unbind() const = 0;
+        //TODO: set data, lock and unlock mechanism to stream data to the vertex buffer before I render the next time.
 
 		virtual const BufferLayout& GetLayout() const = 0;
 		virtual void SetLayout(const BufferLayout& layout) = 0;
