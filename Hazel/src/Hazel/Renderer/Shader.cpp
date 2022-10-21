@@ -3,6 +3,8 @@
 
 #include <glad/glad.h>
 
+#include <glm/gtc/type_ptr.hpp>
+
 namespace Hazel {
 
 	//Newer versions of OGL call Create APIs instead of Gen APIs. 
@@ -130,5 +132,17 @@ namespace Hazel {
 	{
 		glUseProgram(0);
 	}
+
+    //The program needs to be bound before we call this function
+    void Shader::UploadUniformMat4(const std::string& name, const glm::mat4& matrix)
+    {
+        //if this returns a -1 the name for the uniform does not exist
+        //The name of the variable is what we used in the shader program
+        //TODO: handle errors. Shader needs a remake in general
+        GLint location = glGetUniformLocation(m_RendererID, name.c_str());
+
+        //f means is a float, v means it is an array of floats because a matrix is 16 floats
+        glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
+    }
 
 }
