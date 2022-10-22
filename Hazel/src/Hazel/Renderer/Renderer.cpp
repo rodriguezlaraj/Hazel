@@ -1,6 +1,8 @@
 #include "hzpch.h"
 #include "Renderer.h"
 
+#include "Platform/OpenGL/OpenGLShader.h"
+
 namespace Hazel {
 
     Renderer::SceneData* Renderer::s_SceneData = new Renderer::SceneData;
@@ -29,8 +31,11 @@ namespace Hazel {
         shader->Bind();
 
         //This is the name of the variable we actually use in the shader program.
-        shader->UploadUniformMat4("u_ViewProjection", s_SceneData->ViewProjectionMatrix);
-        shader->UploadUniformMat4("u_Transform", transform); shader->UploadUniformMat4("u_ViewProjection", s_SceneData->ViewProjectionMatrix);
+        //We know at this point that this is an OpenGLShader becuase that is the only type of shader we currently have. 
+        //In the future, this will not be required and will be done differently. UploadUniformMat4 is OGL function and will not be here anyway.
+        //This is done to ahve the system working without writing unnecessary work for abstraction.
+        std::dynamic_pointer_cast<OpenGLShader>(shader)->UploadUniformMat4("u_ViewProjection", s_SceneData->ViewProjectionMatrix);
+        std::dynamic_pointer_cast<OpenGLShader>(shader)->UploadUniformMat4("u_Transform", transform);
 
         vertexArray->Bind();
         RenderCommand::DrawIndexed(vertexArray);
