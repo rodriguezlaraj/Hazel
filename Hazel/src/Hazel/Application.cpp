@@ -7,6 +7,8 @@
 
 #include "Input.h"
 
+#include <glfw/glfw3.h>
+
 namespace Hazel {
 
 	float red = 0;
@@ -17,7 +19,6 @@ namespace Hazel {
 	Application* Application::s_Instance = nullptr;
 
 	Application::Application()
-        : m_Camera(-1.6f, 1.6f, -0.9f, 0.9f)
 	{
 		HZ_CORE_ASSERT(!s_Instance, "Application already exists!"); //To make sure we can only have one application
 		
@@ -29,152 +30,7 @@ namespace Hazel {
 		m_ImGuiLayer = new ImGuiLayer();
 		PushOverlay(m_ImGuiLayer);
 
-        m_VertexArray.reset(VertexArray::Create());
-
-		float vertices[3 * 7] = {
-			-0.5f, -0.5f, 0.0f, 0.8f, 0.2f, 0.8f, 1.0f,
-			 0.5f, -0.5f, 0.0f, 0.2f, 0.3f, 0.8f, 1.0f,
-			 0.0f,  0.5f, 0.0f, 0.8f, 0.8f, 0.2f, 1.0f
-		};
-
-        std::shared_ptr<VertexBuffer> vertexBuffer;
-        vertexBuffer.reset(VertexBuffer::Create(vertices, sizeof(vertices)));
-        BufferLayout layout = {
-            { ShaderDataType::Float3, "a_Position" },
-            { ShaderDataType::Float4, "a_Color" }
-        };
-        vertexBuffer->SetLayout(layout);
-        m_VertexArray->AddVertexBuffer(vertexBuffer);
-
-        uint32_t indices[3] = { 0, 1, 2 };
-        std::shared_ptr<IndexBuffer> indexBuffer;
-        indexBuffer.reset(IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
-        m_VertexArray->SetIndexBuffer(indexBuffer);
-
-        m_SquareVA.reset(VertexArray::Create());
-
-        float squareVertices[3 * 4] = {
-            -0.75f, -0.75f, 0.0f,
-             0.75f, -0.75f, 0.0f,
-             0.75f,  0.75f, 0.0f,
-            -0.75f,  0.75f, 0.0f
-        };
-
-        std::shared_ptr<VertexBuffer> squareVB;
-        squareVB.reset(VertexBuffer::Create(squareVertices, sizeof(squareVertices)));
-        squareVB->SetLayout({
-            { ShaderDataType::Float3, "a_Position" }
-            });
-        m_SquareVA->AddVertexBuffer(squareVB);
-
-        uint32_t squareIndices[6] = { 0, 1, 2, 2, 3, 0 };
-        std::shared_ptr<IndexBuffer> squareIB;
-        squareIB.reset(IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t)));
-        m_SquareVA->SetIndexBuffer(squareIB);
-
-
-		std::string vertexSrc = R"(
-			#version 330 core
-			
-			layout(location = 0) in vec3 a_Position;
-			layout(location = 1) in vec4 a_Color;
-
-            uniform mat4 u_ViewProjection;
-
-			out vec3 v_Position;
-			out vec4 v_Color;
-			void main()
-			{
-				v_Position = a_Position;
-				v_Color = a_Color;
-				gl_Position = u_ViewProjection * vec4(a_Position, 1.0);	
-			}
-		)";
-
-		std::string fragmentSrc = R"(
-			#version 330 core
-			
-			layout(location = 0) out vec4 color;
-			in vec3 v_Position;
-            in vec4 v_Color;
-			void main()
-			{
-				color = vec4(v_Position * 0.5 + 0.5, 1.0); //Blue, Green, Pink
-                color = v_Color;//Pink Yellow Blue
-			}
-		)";
-
-		/*
-		* #SHADER EXAMPLE!!!
-		#shader vertex
-		#version 330 core
-
-			//Input data into the vertex shader by using in
-			layout(location = 0) in vec4 position; //The location 0 must match the index 0 above. This is a cast to vec4 even though we have vec 2
-		layout(location = 1) in vec2 texCoord;
-
-		//Output data from the vertex shader into the fragment shader
-		out vec2 v_TexCoord;
-
-		uniform mat4 u_MVP; //Model View Projection matrix
-
-		void main()
-		{
-			gl_Position = u_MVP * position; //Send the position to the GPU (gl_Position)
-			v_TexCoord = texCoord;
-		};
-
-		#shader fragment
-			#version 330 core
-
-			//Output data from the fragment shader by using out
-			layout(location = 0) out vec4 color; //The location 0 must match the index 0 above. This is a cast to vec4 even though we have vec 2
-		in vec2 v_TexCoord;
-
-		//uniform vec4 u_Color;
-		uniform sampler2D u_Texture;
-
-		void main()
-		{
-			vec4 texColor = texture(u_Texture, v_TexCoord);
-			color = texColor; //vec4(0.0, 1.0, 0.0, 1.0); //0 is white, 1 is black   [R, G, B, A] //Sends the color for each pixel to the GPU 
-			//color = u_Color; //vec4(0.0, 1.0, 0.0, 1.0); //0 is white, 1 is black   [R, G, B, A]
-		};*/
-
-
-		m_Shader.reset(new Shader(vertexSrc, fragmentSrc));
-
-        m_Shader.reset(new Shader(vertexSrc, fragmentSrc));
-
-        std::string blueShaderVertexSrc = R"(
-			#version 330 core
-			
-			layout(location = 0) in vec3 a_Position;
-
-            uniform mat4 u_ViewProjection;
-
-
-			out vec3 v_Position;
-			void main()
-			{
-				v_Position = a_Position;
-                gl_Position = u_ViewProjection * vec4(a_Position, 1.0);	
-			}
-		)";
-
-        std::string blueShaderFragmentSrc = R"(
-			#version 330 core
-			
-			layout(location = 0) out vec4 color;
-			in vec3 v_Position;
-			void main()
-			{
-				color = vec4(0.2, 0.3, 0.8, 1.0);
-			}
-		)";
-
-        m_BlueShader.reset(new Shader(blueShaderVertexSrc, blueShaderFragmentSrc));
-
+        
 	}
 
 	Application::~Application()
@@ -215,23 +71,16 @@ namespace Hazel {
 	{
 		while (m_Running)
 		{
-            RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
-            RenderCommand::Clear();
-
-            m_Camera.SetPosition({ 0.5f, 0.5f, 0.0f });
-            m_Camera.SetRotation(45.0f);
-            Renderer::BeginScene(m_Camera);
-
-            Renderer::Submit(m_BlueShader, m_SquareVA);
-            Renderer::Submit(m_Shader, m_VertexArray);
-
-            Renderer::EndScene();
+            //TODO: This can use QueryPerformanceCounter from windows. //This should be per platform because each platform gives time. We should not call glfw here.
+            float time = (float)glfwGetTime(); 
+            Timestep timestep = time - m_LastFrameTime;
+            m_LastFrameTime = time;
 
 			//I assume that if the virtual method is not implemented by the specific layer below, then the function is just not called.
             //Go through all the layers OnUpdate
 			for (Layer* layer : m_LayerStack)  //Can use directly for loop because begin and end are implemented in the LayerStack class
 			{
-				layer->OnUpdate();
+                layer->OnUpdate(timestep);
 			}
 
 
@@ -269,6 +118,7 @@ namespace Hazel {
 
 	bool Application::OnMouseClick(MouseButtonPressedEvent& e)
 	{
+       
 		if (red >= 1.0) 
 		{
 			red = 0.0;
