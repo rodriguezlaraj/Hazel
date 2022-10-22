@@ -16,7 +16,8 @@ namespace Hazel {
 
         //Submit can be overloaded to be able to receive mesh, raw vertex array, etc.
         //In the future, the mesh would have a material and the material is related to a shader.
-        static void Submit(const std::shared_ptr<Shader>& shader, const std::shared_ptr<VertexArray>& vertexArray);
+        static void Submit(const std::shared_ptr<Shader>& shader, const std::shared_ptr<VertexArray>& vertexArray, const glm::mat4& transform = glm::mat4(1.0f));
+
 
         inline static RendererAPI::API GetAPI() { return RendererAPI::GetAPI(); }
     private:
@@ -24,8 +25,7 @@ namespace Hazel {
         {
             glm::mat4 ViewProjectionMatrix;
         };
-
-        static SceneData* m_SceneData;
+        static SceneData* s_SceneData;
 	};
 }
 
