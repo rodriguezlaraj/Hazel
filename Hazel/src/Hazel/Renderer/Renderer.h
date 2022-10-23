@@ -11,6 +11,8 @@ namespace Hazel {
 	class Renderer
 	{
 	public:
+        static void Init();
+
         static void BeginScene(OrthographicCamera& camera);; //TODO: Add camera. lights, environments
         static void EndScene(); 
 
