@@ -13,6 +13,8 @@ namespace Hazel {
         virtual void Bind() const = 0;
         virtual void Unbind() const = 0;
 
+
+        static Shader* Create(const std::string& filepath);
         //This is a temporary solution while a material class is created. 
         //We have to offer the create method becuase we cannot use 'new' as it is an abstract class.
         static Shader* Create(const std::string& vertexSrc, const std::string& fragmentSrc);
