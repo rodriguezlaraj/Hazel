@@ -11,6 +11,8 @@ namespace Hazel {
         //This is like a rectangle or a cube
         OrthographicCamera(float left, float right, float bottom, float top);
 
+        void SetProjection(float left, float right, float bottom, float top);
+
 
         //after updating rotation or position, we need to recalculate the ViewProjectionMatrix
         //if we are responding to the mouse, we can update the ViewProjectionMatrix on the event.
