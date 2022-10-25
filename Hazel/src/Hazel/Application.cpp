@@ -58,6 +58,7 @@ namespace Hazel {
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
 		dispatcher.Dispatch<MouseButtonPressedEvent>(BIND_EVENT_FN(OnMouseClick));
+        dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT_FN(OnWindowResize));
 
 	
 
@@ -78,12 +79,15 @@ namespace Hazel {
             Timestep timestep = time - m_LastFrameTime;
             m_LastFrameTime = time;
 
-			//I assume that if the virtual method is not implemented by the specific layer below, then the function is just not called.
-            //Go through all the layers OnUpdate
-			for (Layer* layer : m_LayerStack)  //Can use directly for loop because begin and end are implemented in the LayerStack class
-			{
-                layer->OnUpdate(timestep);
-			}
+
+            //Only update if the window is not minimized
+            if (!m_Minimized)
+            {
+                //I assume that if the virtual method is not implemented by the specific layer below, then the function is just not called.
+                //Go through all the layers OnUpdate
+                for (Layer* layer : m_LayerStack)
+                    layer->OnUpdate(timestep);
+            }
 
 
 			//Takes care of ImGui Rendering
@@ -117,6 +121,20 @@ namespace Hazel {
 		m_Running = false;
 		return true;
 	}
+
+    bool Application::OnWindowResize(WindowResizeEvent& e)
+    {
+        if (e.GetWidth() == 0 || e.GetHeight() == 0)
+        {
+            m_Minimized = true;
+            return false;
+        }
+
+        m_Minimized = false;
+        Renderer::OnWindowResize(e.GetWidth(), e.GetHeight());
+
+        return false;
+    }
 
 	bool Application::OnMouseClick(MouseButtonPressedEvent& e)
 	{

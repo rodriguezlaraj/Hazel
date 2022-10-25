@@ -12,6 +12,12 @@ namespace Hazel {
         RenderCommand::Init();
     }
 
+    //The renderer needs to handle when there is a window resize by ultimately triggering a call to our Graphics API (Vulkan, OpenGL, etc) "Set View Port"
+    void Renderer::OnWindowResize(uint32_t width, uint32_t height)
+    {
+        RenderCommand::SetViewport(0, 0, width, height);
+    }
+
     void Renderer::BeginScene(OrthographicCamera& camera)
     {
         //Make sure that the shaders have the correct uniforms

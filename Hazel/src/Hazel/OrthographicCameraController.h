@@ -16,8 +16,13 @@ namespace Hazel {
         void OnUpdate(Timestep ts);
         void OnEvent(Event& e);
 
+        //Offer two options with one keeping the components constant.
         OrthographicCamera& GetCamera() { return m_Camera; }
         const OrthographicCamera& GetCamera() const { return m_Camera; }
+
+        //These two functions are to work with the window scaling
+        float GetZoomLevel() const { return m_ZoomLevel; }
+        void SetZoomLevel(float level) { m_ZoomLevel = level; }
     private:
         bool OnMouseScrolled(MouseScrolledEvent& e);
         bool OnWindowResized(WindowResizeEvent& e);

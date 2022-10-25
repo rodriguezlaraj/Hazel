@@ -29,6 +29,20 @@ namespace Hazel {
          //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);//Activate blending function
     }
 
+    void OpenGLRendererAPI::SetViewport(uint32_t x, uint32_t y, uint32_t width, uint32_t height)
+    {
+        /*void glViewport(GLint x,
+            GLint y,
+            GLsizei width,
+            GLsizei height);
+        Parameters
+            x, y
+            Specify the lower left corner of the viewport rectangle, in pixels.The initial value is(0, 0).
+            width, height
+            Specify the widthand height of the viewport.When a GL context is first attached to a window, widthand height are set to the dimensions of that window.*/
+        glViewport(x, y, width, height);
+    }
+
     void OpenGLRendererAPI::SetClearColor(const glm::vec4& color)
     {
         glClearColor(color.r, color.g, color.b, color.a);
