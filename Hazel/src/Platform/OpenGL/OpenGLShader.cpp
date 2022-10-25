@@ -25,9 +25,17 @@ namespace Hazel {
         std::string source = ReadFile(filepath);
         auto shaderSources = PreProcess(source);
         Compile(shaderSources);
+
+        // Extract name from filepath
+        auto lastSlash = filepath.find_last_of("/\\");  //Find the last / or \...
+        lastSlash = lastSlash == std::string::npos ? 0 : lastSlash + 1; //If there are no / or \, we set the last to be 0
+        auto lastDot = filepath.rfind('.'); //find the last ".", which would be the extension
+        auto count = lastDot == std::string::npos ? filepath.size() - lastSlash : lastDot - lastSlash; //Handle the case when there is no extension for the file.
+        m_Name = filepath.substr(lastSlash, count);
     }
 
-    OpenGLShader::OpenGLShader(const std::string& vertexSrc, const std::string& fragmentSrc)
+    OpenGLShader::OpenGLShader(const std::string& name, const std::string& vertexSrc, const std::string& fragmentSrc)
+        : m_Name(name)
     {
         std::unordered_map<GLenum, std::string> sources;
         sources[GL_VERTEX_SHADER] = vertexSrc;
@@ -43,7 +51,7 @@ namespace Hazel {
     std::string OpenGLShader::ReadFile(const std::string& filepath)
     {
         std::string result;
-        std::ifstream in(filepath, std::ios::in, std::ios::binary); //TODO: this is windows dependent, In the future it has to move to PLATFORM
+        std::ifstream in(filepath, std::ios::in | std::ios::binary); //TODO: this is windows dependent, In the future it has to move to PLATFORM
         if (in)
         {
             in.seekg(0, std::ios::end);//go to the end of the file
@@ -87,7 +95,10 @@ namespace Hazel {
     void OpenGLShader::Compile(const std::unordered_map<GLenum, std::string>& shaderSources)
     {
         GLuint program = glCreateProgram();
-        std::vector<GLenum> glShaderIDs(shaderSources.size());
+        //Only supports two types of shaders. 
+        HZ_CORE_ASSERT(shaderSources.size() <= 2, "We only support 2 shaders for now");
+        std::array<GLenum, 2> glShaderIDs;//Array of specifically size 2, we define the array in the stack. A vector is allocated to the heap.
+        int glShaderIDIndex = 0;
         for (auto& kv : shaderSources)
         {
             GLenum type = kv.first;
@@ -120,7 +131,7 @@ namespace Hazel {
             }
 
             glAttachShader(program, shader);
-            glShaderIDs.push_back(shader);
+            glShaderIDs[glShaderIDIndex++] = shader;
         }
 
         m_RendererID = program;
