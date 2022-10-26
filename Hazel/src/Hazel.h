@@ -27,5 +27,6 @@
 // -----------------------------------
 
 // --- Entry Point---------------------
-#include "Hazel/Core/EntryPoint.h"
+//#include "Hazel/Core/EntryPoint.h"
+// //This was moved to be included ONLY ONCE in SandBoxApp.cpp
 // ----------------------------------
