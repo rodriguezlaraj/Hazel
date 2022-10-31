@@ -2,6 +2,7 @@
 #include "Renderer.h"
 
 #include "Platform/OpenGL/OpenGLShader.h"
+#include "Renderer2D.h"
 
 namespace Hazel {
 
@@ -10,9 +11,14 @@ namespace Hazel {
     void Renderer::Init()
     {
         RenderCommand::Init();
+        Renderer2D::Init();
     }
 
+    //TODO: Shutdown needs to be created, similar to Renderer2D.
+
     //The renderer needs to handle when there is a window resize by ultimately triggering a call to our Graphics API (Vulkan, OpenGL, etc) "Set View Port"
+    //We can render multiple view ports in a single frame. This allows us to see different cameras in a single frame. 
+    //TODO: Frame buffers will be handled separately . Frame buffer pool. The application needs toknow about all frame buffers
     void Renderer::OnWindowResize(uint32_t width, uint32_t height)
     {
         RenderCommand::SetViewport(0, 0, width, height);
