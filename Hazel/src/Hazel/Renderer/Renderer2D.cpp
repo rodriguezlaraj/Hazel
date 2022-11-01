@@ -45,7 +45,7 @@ namespace Hazel {
         s_Data->QuadVertexArray->SetIndexBuffer(squareIB);
 
         s_Data->WhiteTexture = Texture2D::Create(1, 1);
-        uint32_t whiteTextureData = 0xffff0088;
+        uint32_t whiteTextureData = 0xffff0088; //RGBA Texture
         s_Data->WhiteTexture->SetData(&whiteTextureData, sizeof(uint32_t));
 
         s_Data->TextureShader = Shader::Create("assets/shaders/Texture.glsl");
@@ -60,6 +60,7 @@ namespace Hazel {
 
     void Renderer2D::BeginScene(const OrthographicCamera& camera)
     {
+        //Binding different shaders should be avoided as it could be an expensive operation.
         s_Data->TextureShader->Bind();
         //This is called set because it is higher level than upload. Upload is directly uploading to the GPU.
         s_Data->TextureShader->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());

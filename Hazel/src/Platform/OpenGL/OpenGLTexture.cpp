@@ -10,6 +10,7 @@ namespace Hazel {
     OpenGLTexture2D::OpenGLTexture2D(uint32_t width, uint32_t height)
         : m_Width(width), m_Height(height)
     {
+        //Most of the arguments below can be parametrized when required.
         m_InternalFormat = GL_RGBA8;
         m_DataFormat = GL_RGBA;
 
@@ -87,6 +88,8 @@ namespace Hazel {
     {
         uint32_t bpp = m_DataFormat == GL_RGBA ? 4 : 3;
         HZ_CORE_ASSERT(size == m_Width * m_Height * bpp, "Data must be entire texture!");
+
+        //Going from 0,0 to m_Width, m_Height indicates the whole texture. We can select portions of the texture when required. Perhaps to create a Texture Atlas.
         glTextureSubImage2D(m_RendererID, 0, 0, 0, m_Width, m_Height, m_DataFormat, GL_UNSIGNED_BYTE, data);
     }
 

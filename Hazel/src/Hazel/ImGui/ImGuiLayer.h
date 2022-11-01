@@ -19,7 +19,6 @@ namespace Hazel {
 
 		virtual void OnAttach() override;
 		virtual void OnDetach() override;
-		virtual void OnImGuiRender() override;
 
 		//ImGuiLayer does not need OnEvent because the events get directly to it from GLFW throught the window
 		//and are handled internally.
