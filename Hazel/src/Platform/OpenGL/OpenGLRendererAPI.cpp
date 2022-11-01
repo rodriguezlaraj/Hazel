@@ -7,10 +7,10 @@ namespace Hazel {
 
     void OpenGLRendererAPI::Init()
     {
-        glEnable(GL_BLEND);
+        glEnable(GL_BLEND); //Enable blend to mix up textures and colours
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-        glEnable(GL_DEPTH_TEST);
+        glEnable(GL_DEPTH_TEST); //Enable the dept test so that things in the back do not overwrite things that are supposed to be in front.
 
         ///*
          //glEnable(GL_BLEND) - glDisable(GL_BLEND)
@@ -52,7 +52,7 @@ namespace Hazel {
 
     void OpenGLRendererAPI::Clear()
     {
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //The depth buffer must be cleared every time.
     }
 
     void OpenGLRendererAPI::DrawIndexed(const std::shared_ptr<VertexArray>& vertexArray)
@@ -67,6 +67,8 @@ namespace Hazel {
 
         //TODO: It is assumed that we always have GL_UNSIGNED_INT and GL_TRIANGLES
         glDrawElements(GL_TRIANGLES, vertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);//6 Elements Indices drawed,  nullptr because it is bounded. otherwise woudl be a pointer to that index
+
+        glBindTexture(GL_TEXTURE_2D, 0);
     }
 
 }
