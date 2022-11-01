@@ -43,6 +43,9 @@ namespace Hazel {
         glTextureParameteri(m_RendererID, GL_TEXTURE_MIN_FILTER, GL_LINEAR); //Texture rendered on geometry smaller than the texture. This is good for images
         glTextureParameteri(m_RendererID, GL_TEXTURE_MAG_FILTER, GL_NEAREST);//Texture rendered on geometry larger than the texture. 
 
+        glTextureParameteri(m_RendererID, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTextureParameteri(m_RendererID, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
         glTextureSubImage2D(m_RendererID, 0, 0, 0, m_Width, m_Height, dataFormat, GL_UNSIGNED_BYTE, data);
         //Level 0, GL_RGBA Internal, format we want to use, not the format we supply 
         //GL_RGBA Format in which we supply the data, GL_UNSIGNED_BYTE Type of that supplied, m_LocalBuffer= Actual data
