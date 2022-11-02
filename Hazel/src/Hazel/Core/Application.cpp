@@ -139,13 +139,13 @@ namespace Hazel {
 	bool Application::OnMouseClick(MouseButtonPressedEvent& e)
 	{
        
-		if (red >= 1.0) 
+		if (red >= 1.0f) 
 		{
-			red = 0.0;
+			red = 0.0f;
 		}
 		else 
 		{
-			red += 0.1;
+			red += 0.1f;
 		}
 
 		return true;

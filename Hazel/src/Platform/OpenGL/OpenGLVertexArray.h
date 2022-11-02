@@ -22,6 +22,7 @@ namespace Hazel {
         virtual const std::shared_ptr<IndexBuffer>& GetIndexBuffer() const { return m_IndexBuffer; }
     private:
         uint32_t m_RendererID;
+        uint32_t m_VertexBufferIndex = 0; //Index to allow to add multiple vertex buffers 
         std::vector<std::shared_ptr<VertexBuffer>> m_VertexBuffers;
         std::shared_ptr<IndexBuffer> m_IndexBuffer;
     };

@@ -11,8 +11,11 @@ namespace Hazel {
 	//If a game changes levels, it could be necessary to destroy the layer stack and create a new one.
 	LayerStack::~LayerStack()
 	{
-		for (Layer* layer : m_Layers)
-			delete layer;
+        for (Layer* layer : m_Layers)
+        {
+            layer->OnDetach();
+            delete layer;
+        }
 	}
 
 
@@ -34,9 +37,10 @@ namespace Hazel {
 	//The layer stack is owned by the application.
 	void LayerStack::PopLayer(Layer* layer)
 	{
-		auto it = std::find(m_Layers.begin(), m_Layers.end(), layer);
-		if (it != m_Layers.end())
+		auto it = std::find(m_Layers.begin(), m_Layers.begin() + m_LayerInsertIndex, layer);
+        if (it != m_Layers.begin() + m_LayerInsertIndex) //Fixed a bug in LayerStack which would occur if passing an overlay or  non existent layer in to PopLayer.
 		{
+            layer->OnDetach();
 			m_Layers.erase(it);
 			m_LayerInsertIndex--;
 		}
@@ -44,9 +48,12 @@ namespace Hazel {
 
 	void LayerStack::PopOverlay(Layer* overlay)
 	{
-		auto it = std::find(m_Layers.begin(), m_Layers.end(), overlay);
-		if (it != m_Layers.end())
-			m_Layers.erase(it);
+		auto it = std::find(m_Layers.begin() + m_LayerInsertIndex, m_Layers.end(), overlay);
+        if (it != m_Layers.end())
+        {
+            overlay->OnDetach();
+            m_Layers.erase(it);
+        }
 	}
 
 }
