@@ -14,6 +14,12 @@ namespace Hazel {
         Renderer2D::Init();
     }
 
+    void Renderer::Shutdown()
+    {
+        Renderer2D::Shutdown();
+    }
+
+
     //TODO: Shutdown needs to be created, similar to Renderer2D.
 
     //The renderer needs to handle when there is a window resize by ultimately triggering a call to our Graphics API (Vulkan, OpenGL, etc) "Set View Port"
