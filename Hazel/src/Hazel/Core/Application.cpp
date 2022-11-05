@@ -66,9 +66,9 @@ namespace Hazel {
 
 	
 
-		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin(); )
+        for (auto it = m_LayerStack.rbegin(); it != m_LayerStack.rend(); ++it)
 		{
-			(*--it)->OnEvent(e);
+            (*it)->OnEvent(e);
 			if (e.Handled)
 				break; //Ensures that an event is handled only one time. The vector is traversed in reverse to handle the events that are closer to the user.
 		}

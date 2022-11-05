@@ -1,5 +1,5 @@
 workspace "Hazel"     --name of solution
-	architecture "x64"   --platform
+	architecture "x86_64"   --platform
 
 	configurations
 	{
