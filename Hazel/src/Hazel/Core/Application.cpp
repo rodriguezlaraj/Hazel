@@ -18,6 +18,7 @@ namespace Hazel {
 
 	Application::Application()
 	{
+        HZ_PROFILE_FUNCTION();
 		HZ_CORE_ASSERT(!s_Instance, "Application already exists!"); //To make sure we can only have one application
 		
 		s_Instance = this;//Application as a singleton.
@@ -35,17 +36,20 @@ namespace Hazel {
 
 	Application::~Application()
 	{
+        HZ_PROFILE_FUNCTION();
         Renderer::Shutdown();
 	}
 
 	void Application::PushLayer(Layer* layer)
 	{
+        HZ_PROFILE_FUNCTION();
 		m_LayerStack.PushLayer(layer);
 		layer->OnAttach();
 	}
 
 	void Application::PushOverlay(Layer* layer)
 	{
+        HZ_PROFILE_FUNCTION();
 		m_LayerStack.PushOverlay(layer);
 		layer->OnAttach();
 	}
@@ -54,6 +58,7 @@ namespace Hazel {
 	//If we had to define a function for each type of event, then the Application and the Window layer are not really decoupled.
 	void Application::OnEvent(Event& e)
 	{
+        HZ_PROFILE_FUNCTION();
 		EventDispatcher dispatcher(e);
         dispatcher.Dispatch<WindowCloseEvent>(HZ_BIND_EVENT_FN(Application::OnWindowClose));
         dispatcher.Dispatch<MouseButtonPressedEvent>(HZ_BIND_EVENT_FN(Application::OnMouseClick));
@@ -71,8 +76,10 @@ namespace Hazel {
 
 	void Application::Run()
 	{
+        HZ_PROFILE_FUNCTION();
 		while (m_Running)
 		{
+            HZ_PROFILE_SCOPE("RunLoop");
             //TODO: This can use QueryPerformanceCounter from windows. //This should be per platform because each platform gives time. We should not call glfw here.
             float time = (float)glfwGetTime(); 
             Timestep timestep = time - m_LastFrameTime;
@@ -82,33 +89,30 @@ namespace Hazel {
             //Only update if the window is not minimized
             if (!m_Minimized)
             {
-                //I assume that if the virtual method is not implemented by the specific layer below, then the function is just not called.
-                //Go through all the layers OnUpdate
-                for (Layer* layer : m_LayerStack)
-                    layer->OnUpdate(timestep);
+                {
+                    HZ_PROFILE_SCOPE("RunLoop");
+                    //I assume that if the virtual method is not implemented by the specific layer below, then the function is just not called.
+                    //Go through all the layers OnUpdate
+                    for (Layer* layer : m_LayerStack)
+                        layer->OnUpdate(timestep);
+                }
+
+                //Takes care of ImGui Rendering
+                m_ImGuiLayer->Begin(); //It only requires 1 begin
+                {
+                    HZ_PROFILE_SCOPE("LayerStack OnImGuiRender");
+                    //Go through all the layers for OnImGuiRender
+                    for (Layer* layer : m_LayerStack)
+                        layer->OnImGuiRender(); //Each layer can have its own Rendering.
+
+                    m_ImGuiLayer->End();  //It only requires 1 end.
+                }
             }
 
 
-			//Takes care of ImGui Rendering
-			m_ImGuiLayer->Begin(); //It only requires 1 begin
-
-			//Go through all the layers for OnImGuiRender
-			for (Layer* layer : m_LayerStack)
-				layer->OnImGuiRender(); //Each layer can have its own Rendering.
-
-			m_ImGuiLayer->End();  //It only requires 1 end.
-
-
-			//auto [x, y] = Input::GetMousePosition();
-			//static float xx = 0;
-			//static float yy = 0;
-			//if( (xx != x) || (yy != y))
-			//{
-			//	HZ_CORE_TRACE("{0}, {1}", x, y);
-			//	yy = y;
-			//	xx = x;
-			//}
 			
+
+
 
 			m_Window->OnUpdate();
 		}
@@ -123,6 +127,7 @@ namespace Hazel {
 
     bool Application::OnWindowResize(WindowResizeEvent& e)
     {
+        HZ_PROFILE_FUNCTION();
         if (e.GetWidth() == 0 || e.GetHeight() == 0)
         {
             m_Minimized = true;

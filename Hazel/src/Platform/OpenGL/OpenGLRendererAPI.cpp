@@ -7,6 +7,7 @@ namespace Hazel {
 
     void OpenGLRendererAPI::Init()
     {
+        HZ_PROFILE_FUNCTION();
         glEnable(GL_BLEND); //Enable blend to mix up textures and colours
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
