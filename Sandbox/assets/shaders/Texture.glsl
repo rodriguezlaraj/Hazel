@@ -25,6 +25,7 @@ layout(location = 0) out vec4 color;
 in vec2 v_TexCoord;
 
 uniform vec4 u_Color;
+uniform float u_TilingFactor;
 uniform sampler2D u_Texture;
 
 void main()
@@ -32,7 +33,8 @@ void main()
 	//color = texture(u_Texture, v_TexCoord);
 	//color = texture(u_Texture, v_TexCoord * 10.0) * vec4(1.0, 0.8, 0.8, 1.0);
 	//The 10 scaling and the vec4(1.0, 0.8, 0.8, 1.0) could be set as uniforms to edit them dynamically. The colour is set dynamically below
-	color = texture(u_Texture, v_TexCoord * 10.0) * u_Color;
+	//color = texture(u_Texture, v_TexCoord * 10.0) * u_Color;
+	color = texture(u_Texture, v_TexCoord * u_TilingFactor) * u_Color;
 	//Used to debug the textures. We should see a gradient. Black to Red ->   and Black to Green ^ and mixture in between
 	//color = vec4(v_TexCoord, 0.0, 1.0);
 }

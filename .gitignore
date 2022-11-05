@@ -1,9 +1,14 @@
-# Directories
-# bin and bin-int may be commited in the future but not now
-.vs/
-/bin/
+# Binaries
+**/bin/
+!vendor/bin/premake/
 bin-int/
 
+# Hazel files
+*.log
 
-#Files
-*.user
+# Visual Studio files and folder
+.vs/
+**.sln
+**.vcxproj
+**.vcxproj.filters
+**.vcxproj.user

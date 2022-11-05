@@ -13,13 +13,14 @@
 
 #include "Hazel/ImGui/ImGuiLayer.h"
 
+int main(int argc, char** argv);
+
 namespace Hazel {
 	class Application
 	{
 	public:
 		Application();
 		virtual ~Application(); //becuase this class will be inherited by the sandbox application
-		void Run(); 
 
 		void OnEvent(Event& e);
 
@@ -32,6 +33,7 @@ namespace Hazel {
 		//There is only going to be one application and wherever we want to access the applicatio because it has important information
 		inline static Application& Get() { return *s_Instance; } 
 	private:
+        void Run();
 		bool OnWindowClose(WindowCloseEvent& e);
         bool OnWindowResize(WindowResizeEvent& e);
 		bool OnMouseClick(MouseButtonPressedEvent& e);
@@ -45,6 +47,7 @@ namespace Hazel {
 	private:
 		//There is only going to be one application and wherever we want to access the applicatio because it has important information
 		static Application* s_Instance;
+        friend int ::main(int argc, char** argv);
 		
 	};
 
