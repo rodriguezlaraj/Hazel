@@ -1,8 +1,6 @@
 #include "hzpch.h"
-#include "Renderer.h"
-
-#include "Platform/OpenGL/OpenGLShader.h"
-#include "Renderer2D.h"
+#include "Hazel/Renderer/Renderer.h"
+#include "Hazel/Renderer/Renderer2D.h"
 
 namespace Hazel {
 
@@ -49,7 +47,7 @@ namespace Hazel {
     //I have a material [Shader]
     //We can to apply a transform
     //This transform is for EACH object but The camera is for the whole scene
-    void Renderer::Submit(const std::shared_ptr<Shader>& shader, const std::shared_ptr<VertexArray>& vertexArray, const glm::mat4& transform)
+    void Renderer::Submit(const Ref<Shader>& shader, const Ref<VertexArray>& vertexArray, const glm::mat4& transform)
     {
         shader->Bind();
 
@@ -57,8 +55,8 @@ namespace Hazel {
         //We know at this point that this is an OpenGLShader becuase that is the only type of shader we currently have. 
         //In the future, this will not be required and will be done differently. UploadUniformMat4 is OGL function and will not be here anyway.
         //This is done to ahve the system working without writing unnecessary work for abstraction.
-        std::dynamic_pointer_cast<OpenGLShader>(shader)->UploadUniformMat4("u_ViewProjection", s_SceneData->ViewProjectionMatrix);
-        std::dynamic_pointer_cast<OpenGLShader>(shader)->UploadUniformMat4("u_Transform", transform);
+        shader->SetMat4("u_ViewProjection", s_SceneData->ViewProjectionMatrix);
+        shader->SetMat4("u_Transform", transform);
 
         vertexArray->Bind();
         RenderCommand::DrawIndexed(vertexArray);

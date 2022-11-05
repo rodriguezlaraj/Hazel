@@ -24,7 +24,7 @@ namespace Hazel {
 
 	// Interface representing a desktop system based Window
 	// All functions are virtual, they all have to be implemented by platform
-	class HAZEL_API Window
+	class Window
 	{
 	public:
 		using EventCallbackFn = std::function<void(Event&)>;
@@ -44,7 +44,7 @@ namespace Hazel {
 		//it is void because here it does not have to be a GLFW window, it can be a different type of window
 		virtual void* GetNativeWindow() const = 0;
 
-		static Window* Create(const WindowProps& props = WindowProps());
+        static Scope<Window> Create(const WindowProps& props = WindowProps());
 	};
 
 }

@@ -1,19 +1,17 @@
 #include "hzpch.h"
-#include "Application.h"
+#include "Hazel/Core/Application.h"
 
 #include "Hazel/Core/Log.h"
 
 #include "Hazel/Renderer/Renderer.h"
 
-#include "Input.h"
+#include "Hazel/Core/Input.h"
 
 #include <glfw/glfw3.h>
 
 namespace Hazel {
 
 	float red = 0;
-
-#define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
 	
 	//Applicatoin as a singleton
 	Application* Application::s_Instance = nullptr;
@@ -24,8 +22,8 @@ namespace Hazel {
 		
 		s_Instance = this;//Application as a singleton.
 
-		m_Window = std::unique_ptr<Window>(Window::Create()); //Calls with default parameters
-		m_Window->SetEventCallback(BIND_EVENT_FN(OnEvent));
+        m_Window = Window::Create();
+        m_Window->SetEventCallback(HZ_BIND_EVENT_FN(Application::OnEvent));
 
         Renderer::Init();
 
@@ -57,9 +55,9 @@ namespace Hazel {
 	void Application::OnEvent(Event& e)
 	{
 		EventDispatcher dispatcher(e);
-		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
-		dispatcher.Dispatch<MouseButtonPressedEvent>(BIND_EVENT_FN(OnMouseClick));
-        dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT_FN(OnWindowResize));
+        dispatcher.Dispatch<WindowCloseEvent>(HZ_BIND_EVENT_FN(Application::OnWindowClose));
+        dispatcher.Dispatch<MouseButtonPressedEvent>(HZ_BIND_EVENT_FN(Application::OnMouseClick));
+        dispatcher.Dispatch<WindowResizeEvent>(HZ_BIND_EVENT_FN(Application::OnWindowResize));
 
 	
 

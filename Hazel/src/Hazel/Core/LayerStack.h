@@ -1,16 +1,16 @@
 #pragma once
 
 #include "Hazel/Core/Core.h"
-#include "Layer.h"
+#include "Hazel/Core/Layer.h"
 
 #include <vector>
 
 namespace Hazel {
 
-	class HAZEL_API LayerStack //Not really stack because stuff gets pushed in the meeting
+	class LayerStack //Not really stack because stuff gets pushed in the meeting
 	{
 	public:
-		LayerStack();
+		LayerStack() = default;
 		~LayerStack();
 
 		void PushLayer(Layer* layer);

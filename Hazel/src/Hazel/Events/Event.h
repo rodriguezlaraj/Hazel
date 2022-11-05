@@ -47,7 +47,7 @@ namespace Hazel {
 // Defines the categories of the instance and also provides an interface to the defined categories
 #define EVENT_CLASS_CATEGORY(category) virtual int GetCategoryFlags() const override { return category; }
 
-	class HAZEL_API Event
+	class Event
 	{
 
 	public:

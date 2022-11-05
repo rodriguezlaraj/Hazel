@@ -6,7 +6,7 @@ namespace Hazel {
 
 	//This class is like an interface as there is no data in it.
 	//It has an static instance of itself to make it a singleton.
-	class HAZEL_API Input
+	class Input
 	{
 	public:
 		inline static bool IsKeyPressed(int keycode) { return s_Instance->IsKeyPressedImpl(keycode); }

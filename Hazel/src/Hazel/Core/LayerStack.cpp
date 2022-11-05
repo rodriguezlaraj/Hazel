@@ -1,12 +1,7 @@
 #include "hzpch.h"
-#include "LayerStack.h"
+#include "Hazel/Core/LayerStack.h"
 
 namespace Hazel {
-
-	LayerStack::LayerStack()
-	{
-		
-	}
 
 	//If a game changes levels, it could be necessary to destroy the layer stack and create a new one.
 	LayerStack::~LayerStack()

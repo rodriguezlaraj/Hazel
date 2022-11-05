@@ -1,5 +1,5 @@
 #include "hzpch.h"
-#include "OpenGLRendererAPI.h"
+#include "Platform/OpenGL/OpenGLRendererAPI.h"
 
 #include <glad/glad.h>
 
@@ -55,7 +55,7 @@ namespace Hazel {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //The depth buffer must be cleared every time.
     }
 
-    void OpenGLRendererAPI::DrawIndexed(const std::shared_ptr<VertexArray>& vertexArray)
+    void OpenGLRendererAPI::DrawIndexed(const Ref<VertexArray>& vertexArray)
     {
 
         //glEnable(GL_DEPTH_TEST);// Enable depth test to make sure further fragments do not block closer fragments

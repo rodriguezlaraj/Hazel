@@ -1,6 +1,6 @@
 #pragma once
 //This file is ONLY intended to be used in Hazel applications (Sandbox). This will never be included within Hazel.
-
+#include "Hazel/Core/Core.h"
 #include "Hazel/Core/Application.h"
 #include "Hazel/Core/Layer.h"
 #include "Hazel/Core/Log.h"
