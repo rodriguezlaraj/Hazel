@@ -86,18 +86,11 @@ namespace Hazel {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //The depth buffer must be cleared every time.
     }
 
-    void OpenGLRendererAPI::DrawIndexed(const Ref<VertexArray>& vertexArray)
+    void OpenGLRendererAPI::DrawIndexed(const Ref<VertexArray>& vertexArray, uint32_t indexCount)
     {
-
-        //glEnable(GL_DEPTH_TEST);// Enable depth test to make sure further fragments do not block closer fragments
-        //glDepthFunc(GL_LESS);// Enable depth test to make sure further fragments do not block closer fragments // Accept fragment if it closer to the camera than the former one
-
-
- 
-
-
         //TODO: It is assumed that we always have GL_UNSIGNED_INT and GL_TRIANGLES
-        glDrawElements(GL_TRIANGLES, vertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);//6 Elements Indices drawed,  nullptr because it is bounded. otherwise woudl be a pointer to that index
+        uint32_t count = indexCount ? vertexArray->GetIndexBuffer()->GetCount() : indexCount;
+        glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);//6 Elements Indices drawed,  nullptr because it is bounded. otherwise woudl be a pointer to that index
 
         glBindTexture(GL_TEXTURE_2D, 0);
     }

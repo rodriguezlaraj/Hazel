@@ -14,6 +14,7 @@ namespace Hazel {
 
         static void BeginScene(const OrthographicCamera& camera);
         static void EndScene();//In a complex renderer, it can probably update the vertex data to the gpu in a batch renderer
+        static void Flush();
 
         // Primitives
         //vec 2 and vec3 are used becuase we can use that z coordinate to sort in the z axis. Z can be used for sorted layers.
